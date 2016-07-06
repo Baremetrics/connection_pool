@@ -117,7 +117,16 @@ class ConnectionPool::TimedStack
   def length
     @max - @created + @que.length
   end
-
+  
+  def stats
+    {
+      created: @created,
+      available: @que.length,
+      length: length ,
+      max: @max,
+    }
+  end
+  
   private
 
   ##

@@ -52,6 +52,11 @@ class ConnectionPool
     @available = TimedStack.new(@size, &block)
     @key = :"current-#{@available.object_id}"
   end
+  
+  def stats
+    @available.stats
+  end
+    
 
 if Thread.respond_to?(:handle_interrupt)
 
