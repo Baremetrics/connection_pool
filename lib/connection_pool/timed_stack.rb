@@ -83,7 +83,7 @@ class ConnectionPool::TimedStack
         return connection if connection
 
         to_wait = deadline - ConnectionPool.monotonic_time
-        raise Timeout::Error, "Waited #{timeout} sec" if to_wait <= 0
+        raise Timeout::Error, "Waited #{timeout} sec with #{@max} connections" if to_wait <= 0
         @resource.wait(@mutex, to_wait)
       end
     end
