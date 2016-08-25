@@ -49,7 +49,7 @@ class ConnectionPool::TimedStack
 
   def push(obj, options = {})
     @mutex.synchronize do
-      if @shutdown_block
+      if shutting_down?
         @shutdown_block.call(obj)
       else
         store_connection obj, options
@@ -76,7 +76,7 @@ class ConnectionPool::TimedStack
     deadline = ConnectionPool.monotonic_time + timeout
     @mutex.synchronize do
       loop do
-        raise ConnectionPool::PoolShuttingDownError if @shutdown_block
+        raise ConnectionPool::PoolShuttingDownError if shutting_down?
         return fetch_connection(options) if connection_stored?(options)
 
         connection = try_create(options)
@@ -116,6 +116,10 @@ class ConnectionPool::TimedStack
 
   def length
     @max - @created + @que.length
+  end
+  
+  def shutting_down?
+    !!@shutdown_block
   end
   
   def stats
