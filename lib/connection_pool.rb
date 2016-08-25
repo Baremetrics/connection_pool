@@ -56,6 +56,10 @@ class ConnectionPool
   def stats
     @available.stats
   end
+  
+  def shutting_down?
+    @available.shutting_down?
+  end
     
 
 if Thread.respond_to?(:handle_interrupt)
