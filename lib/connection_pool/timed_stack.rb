@@ -118,9 +118,15 @@ class ConnectionPool::TimedStack
     @max - @created + @que.length
   end
   
+  ##
+  # Is this pool shutting down?
+  
   def shutting_down?
     !!@shutdown_block
   end
+  
+  ##
+  # Return pool stats
   
   def stats
     {
